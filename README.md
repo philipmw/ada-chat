@@ -11,9 +11,9 @@ to talk to all other students.
 Here's how:
 
 1. Using their own AWS account, each student creates their own SQS queue that
-   holds your copy of everyone's chat messages.
+    holds your copy of everyone's chat messages.
 2. Each student subscribes their queue to a single shared SNS topic, owned
-   by Philip's AWS account.
+    by Philip's AWS account.
 3. Each student observes the "chat room" by polling their own SQS queue for messages.
 4. Each student talks in the chat room by publishing a message to the shared SNS topic.
 
@@ -33,14 +33,16 @@ Data flow:
 
 1. Log in to your AWS console.
 2. Create an SQS queue.  Note its ARN and URL.
-3. Set permission on the queue allowing principal `101804781795`
-   (Philip's AWS account which owns the SNS topic) to `SendMessage`.
-   (This allows the shared SNS topic to push chat messages to you.)
+3. Set permission on the queue allowing the shared SNS topic to push chat messages to you:
+    1. Effect: Allow
+    2. Principal: "Everybody (*)"
+    3. Actions: `SendMessage`
+    4. Conditions: `ArnEquals arn:SourceArn = arn:aws:sns:us-west-2:101804781795:ada-chat`
 4. Create an IAM user for reading chat messages from your queue.
-   Note its access and secret keys.
+    Note its access and secret keys.
 5. Create a policy allowing `ReceiveMessage`, `DeleteMessage`, and
-   `DeleteMessageBatch` on your queue's ARN.
-   Bind the policy to your new IAM user.
+    `DeleteMessageBatch` on your queue's ARN.
+    Bind the policy to your new IAM user.
 
 ## Subscribing your queue
 
@@ -82,7 +84,7 @@ ruby chat.rb
 ## Keep in mind
 
 1. SQS is "at-least-once" delivery.  You may receive the same message more than once.
-   This means that SQS is suited only for idempotent messages.
-   ("Balance is now $10" as opposed to "Subtract $3 from balance".)
+    This means that SQS is suited only for idempotent messages.
+    ("At <timestamp>, balance is $10" as opposed to "Subtract $3 from balance".)
 2. Messages are not guaranteed to be delivered in order.  If ordering is important,
-   your application must reorder them using business logic.
+    your application must reorder them using business logic.
