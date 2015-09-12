@@ -85,6 +85,6 @@ ruby chat.rb
 
 1. SQS is "at-least-once" delivery.  You may receive the same message more than once.
     This means that SQS is suited only for idempotent messages.
-    ("At <timestamp>, balance is $10" as opposed to "Subtract $3 from balance".)
+    ("At {timestamp}, balance is $10" as opposed to "Subtract $3 from balance".)
 2. Messages are not guaranteed to be delivered in order.  If ordering is important,
     your application must reorder them using business logic.
