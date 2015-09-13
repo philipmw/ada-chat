@@ -88,3 +88,9 @@ ruby chat.rb
     ("At {timestamp}, balance is $10" as opposed to "Subtract $3 from balance".)
 2. Messages are not guaranteed to be delivered in order.  If ordering is important,
     your application must reorder them using business logic.
+
+## References
+
+* [Documentation for associating an SQS queue with an SNS topic](http://docs.aws.amazon.com/sns/latest/dg/SendMessageToSQS.html)
+* [AWS SDK for Ruby](https://aws.amazon.com/sdk-for-ruby/)
+* [AWS SDK for Ruby - SQS client API](http://docs.aws.amazon.com/sdkforruby/api/Aws/SQS.html
