@@ -81,6 +81,12 @@ export AWS_SECRET_ACCESS_KEY=<get from Philip>
 ruby chat.rb
 ```
 
+## Try
+
+Close your observer for a while.  Send some messages to the chat room.
+Reopen the observer.  You'll receive the chat history containing all messages
+since the moment you left.
+
 ## Keep in mind
 
 1. SQS is "at-least-once" delivery.  You may receive the same message more than once.
@@ -89,8 +95,75 @@ ruby chat.rb
 2. Messages are not guaranteed to be delivered in order.  If ordering is important,
     your application must reorder them using business logic.
 
+## Cost
+
+There are two technologies in play here: SNS and SQS.  Further, costs are divided
+between the SNS topic owner and each chat participant.
+
+Let's assume the chat room receives:
+* one message per 5 seconds for 8 hours a day (business hours) on weekdays,
+* one message per 5 minutes for 16 hours a day on weekends,
+* one message per hour the rest of the time.
+
+There are 365.25 days in a year, with 5/7 of those being weekday and 2/7 being weekend.
+
+* Weekdays: 261 days/year × 8 hours/day × 1 msg/5 sec = 125,229 msg/month
+* Weekends: 104 days/year × 16 hours/day × 1 msg/5 min = 1,670 msg/month
+* Remainder: ((weekdays × 16 hours/day) + (weekends × 8 hours/day)) × 1 msg/hour = 418 msg/month
+
+The sum of the above is 127,317 messages per month.
+
+Let's further assume that an average message is 300 bytes.  (There's data overhead
+added by SNS.)  That's 38.2 MB/month.
+
+### Cost to SNS topic owner
+
+* Publishing: first 1M requests/month are free.  Our 127,317 requests/month are free.
+* Notification deliveries: all deliveries to SQS are free.
+* Data transfer in: free.
+
+Grand total: free.
+
+### Cost to each chat participant
+
+There are three requests involved for each message: enqueuing it from SNS,
+receiving (dequeuing, reading) it, and deleting it.
+
+* Requests: first 1M requests are free.  3 × 127,317 requests/month are free.
+* Data transfer in: free.
+* Data transfer out: first 1 GB/month is free.  Our 39 MB/month is free.
+
+Grand total: free.
+
+## Create your own SNS topic
+
+This demo uses an existing SNS topic in Philip's AWS account, but here's how to
+set up your own.
+
+1. Log in to the AWS Console and go to its *SNS* section.
+2. Create Topic.  Give it a name such as "ada-chat".  Note its ARN.
+3. Update `ADA_CHAT_TOPIC_ARN` constant of `chat.rb` and `chat-subscribe.rb` with the ARN from step 2.
+4. Go to the *IAM* section of AWS Console.
+5. Create a new policy; use the Policy Generator.
+    1. Effect: Allow
+    2. AWS Service: AWS SNS
+    3. Actions: `Publish` and `Subscribe`.
+    4. ARN: the ARN of your new SNS topic from step 2.
+6. Create a new user; write down its access and secret keys, and set them in your environment variables.
+7. Attach the policy from step 5 to the new user.
+
+Now anyone who has your new user's access and secret keys can use `chat-subscribe.rb`
+and `chat.rb` to connect their SQS queue to your topic, then to post messages to
+your topic.
+
+(Warning: this new user can incur costs to your AWS account.  Always be careful
+about sharing your IAM users' credentials.)
+
 ## References
 
 * [Documentation for associating an SQS queue with an SNS topic](http://docs.aws.amazon.com/sns/latest/dg/SendMessageToSQS.html)
 * [AWS SDK for Ruby](https://aws.amazon.com/sdk-for-ruby/)
-* [AWS SDK for Ruby - SQS client API](http://docs.aws.amazon.com/sdkforruby/api/Aws/SQS.html
+* [AWS SDK for Ruby - SQS client API](http://docs.aws.amazon.com/sdkforruby/api/Aws/SQS.html)
+* [AWS SNS Pricing](https://aws.amazon.com/sns/pricing/)
+* [AWS SQS Pricing](https://aws.amazon.com/sqs/pricing/)
+* [AWS Simple Monthly Calculator](http://calculator.s3.amazonaws.com/index.html)
