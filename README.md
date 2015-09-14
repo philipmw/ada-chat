@@ -1,4 +1,4 @@
-<div style="float:right"><a href="https://flattr.com/submit/auto?user_id=philip4g&url=https%3A%2F%2Fgithub.com%2Fphilipmw%2Fada-chat" target="_blank"><img src="//button.flattr.com/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a></div>
+<div style="float:right"><a href="https://flattr.com/submit/auto?user_id=philip4g&url=https%3A%2F%2Fgithub.com%2Fphilipmw%2Fada-chat" target="_blank"><img src="https://button.flattr.com/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a></div>
 
 # SNS demo for Ada Developers Academy
 
