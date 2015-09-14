@@ -1,3 +1,5 @@
+<div style="float:right"><a href="https://flattr.com/submit/auto?user_id=philip4g&url=https%3A%2F%2Fgithub.com%2Fphilipmw%2Fada-chat" target="_blank"><img src="//button.flattr.com/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0"></a></div>
+
 # SNS demo for Ada Developers Academy
 
 ## Overview
@@ -167,5 +169,3 @@ about sharing your IAM users' credentials.)
 * [AWS SNS Pricing](https://aws.amazon.com/sns/pricing/)
 * [AWS SQS Pricing](https://aws.amazon.com/sqs/pricing/)
 * [AWS Simple Monthly Calculator](http://calculator.s3.amazonaws.com/index.html)
-
-<script id='fbsk54r'>(function(i){var f,s=document.getElementById(i);f=document.createElement('iframe');f.src='//api.flattr.com/button/view/?uid=philip4g&url='+encodeURIComponent(document.URL);f.title='Flattr';f.height=62;f.width=55;f.style.borderWidth=0;s.parentNode.insertBefore(f,s);})('fbsk54r');</script>
