@@ -58,7 +58,7 @@ export AWS_REGION=us-west-2
 export AWS_ACCESS_KEY_ID=<get from Philip>
 export AWS_SECRET_ACCESS_KEY=<get from Philip>
 
-ruby chat-subscribe.rb <ARN of your own queue>
+rake subscribe <ARN of your own queue>
 ```
 
 ## Observe chat
@@ -68,7 +68,7 @@ export AWS_REGION=us-west-2
 export AWS_ACCESS_KEY_ID=<your IAM user>
 export AWS_SECRET_ACCESS_KEY=<your IAM user>
 
-ruby chat-observe.rb <URL of your own queue>
+rake observe <URL of your own queue>
 ```
 
 ## Chat to others!
@@ -80,7 +80,7 @@ export AWS_REGION=us-west-2
 export AWS_ACCESS_KEY_ID=<get from Philip>
 export AWS_SECRET_ACCESS_KEY=<get from Philip>
 
-ruby chat.rb
+rake chat
 ```
 
 ## Try
@@ -160,6 +160,14 @@ your topic.
 
 (Warning: this new user can incur costs to your AWS account.  Always be careful
 about sharing your IAM users' credentials.)
+
+## Contribute
+
+[![Build Status](https://travis-ci.org/philipmw/ada-chat.svg)](https://travis-ci.org/philipmw/ada-chat)
+
+Please feel free to contribute fixes and enhancements.
+
+Run unit tests with `rake spec`.
 
 ## References
 
